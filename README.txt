@@ -1,2 +1,2 @@
 1. Linear Regression
-	In this project, Linear Regression is implemented manually, without using scikit-learn. We directly solve the ordinary least squares problem by constructing the design matrix and computing the regression coefficients that minimize the sum of squared residuals.
+	In this project, Linear Regression is implemented manually, without using scikit-learn. 
