@@ -1,15 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
 
 from utils.dataset_readers import load_multi_feature_txt_file
-from algorithms.supervised_regression._1_linear_regression.utils import get_dataset_path
-from algorithms.supervised_regression._1_linear_regression.train import train_linear_regression
+from algorithms.supervised_classifier._2_logistic_regression.utils import get_dataset_path
+from algorithms.supervised_classifier._2_logistic_regression.train import train_logistic_regression
 
 
-def load_linear_regression_page(main_frame, content_frame):
+def load_logistic_regression_page(main_frame, content_frame):
     main_frame.pack_forget()
     content_frame.pack(expand=True, fill="both")
     for w in content_frame.winfo_children():
@@ -27,46 +27,46 @@ def load_linear_regression_page(main_frame, content_frame):
 
     ttk.Button(left, text="← Back", command=lambda: _back(main_frame, content_frame)).pack()
 
-    ttk.Label(left, text="Linear Regression", font=("Arial", 14, "bold")).pack(pady=5)
+    ttk.Label(left, text="Logistic Regression", font=("Arial", 14, "bold")).pack(pady=5)
 
     ttk.Label(left, text="Features:").pack(anchor="w")
-    feature_var = tk.StringVar(value="1")
-    ttk.Combobox(left, textvariable=feature_var, values=["1", "3", "5"], width=6, state="readonly").pack()
+    feature_var = tk.StringVar(value="2")
+    ttk.Combobox(left, textvariable=feature_var,
+                 values=["2", "3", "5"], width=6, state="readonly").pack()
 
     ttk.Label(left, text="Dataset Size:").pack(anchor="w")
     size_var = tk.StringVar(value="10k")
-    ttk.Combobox(left, textvariable=size_var, values=["10k", "50k", "100k"], width=6, state="readonly").pack()
+    ttk.Combobox(left, textvariable=size_var,
+                 values=["10k", "50k", "100k"], width=6, state="readonly").pack()
 
     ttk.Label(left, text="Algorithm:").pack(anchor="w")
     algo_var = tk.StringVar(value="BGD")
     ttk.Combobox(left, textvariable=algo_var,
-                 values=["BGD", "SGD", "Mini-Batch (64)", "Normal Equation"],
-                 width=16, state="readonly").pack()
+                 values=["BGD", "SGD", "Mini-Batch (64)"], width=16, state="readonly").pack()
 
     status = ttk.Label(left, text="")
     status.pack()
 
-    model = {"obj": None, "fcount": 1}
+    model = {"obj": None}
     X_cache = None
     y_cache = None
 
     def train():
-        status.config(text="Training...", foreground="goldenrod")
+        status.config(text="Training...", foreground="gold")
         path = get_dataset_path(int(feature_var.get()), size_var.get())
         X, y = load_multi_feature_txt_file(path)
-        model["obj"] = train_linear_regression(X, y, algo_var.get())
-        model["fcount"] = int(feature_var.get())
         nonlocal X_cache, y_cache
         X_cache, y_cache = X, y
+        model["obj"] = train_logistic_regression(X, y, algo_var.get())
         status.config(text="Done", foreground="green")
         update_plot()
 
     ttk.Button(left, text="Train", command=train).pack(pady=5)
 
-    # -------- Separator line --------
+    # -------- Separator --------
     ttk.Separator(left, orient="horizontal").pack(fill="x", pady=10)
 
-    fig = Figure(figsize=(4, 4))
+    fig = plt.Figure(figsize=(4, 4))
     ax = fig.add_subplot(111)
     canvas = FigureCanvasTkAgg(fig, master=right)
     canvas.get_tk_widget().pack(expand=True, fill="both")
@@ -78,14 +78,20 @@ def load_linear_regression_page(main_frame, content_frame):
             canvas.draw()
             return
 
-        if model["fcount"] == 1:
-            Xs = X_cache[:200, 0]
-            ys = y_cache[:200]
-            ax.scatter(Xs, ys, s=10, alpha=0.5)
-            xs = np.linspace(min(Xs), max(Xs), 100)
-            ax.plot(xs, m.predict(xs.reshape(-1, 1)), color="red")
+        fcount = int(feature_var.get())
+
+        if fcount == 2:
+            idx = np.random.choice(len(X_cache), min(200, len(X_cache)), replace=False)
+            Xs = X_cache[idx]
+            ys = y_cache[idx]
+            ax.scatter(Xs[:, 0], Xs[:, 1], c=ys, cmap="bwr", s=15, alpha=0.5)
+
+            w1, w2 = m.coef_
+            b = m.intercept_
+            xs = np.linspace(-5, 5, 100)
+            ax.plot(xs, (-(w1 * xs + b) / w2), "k--")
         else:
-            txt = "Coefficients:\n"
+            txt = "Coefs:\n"
             for i, c in enumerate(m.coef_):
                 txt += f"w{i+1} = {c:.3f}\n"
             txt += f"b = {m.intercept_:.3f}"
@@ -94,7 +100,6 @@ def load_linear_regression_page(main_frame, content_frame):
         canvas.draw()
 
     ttk.Label(left, text="Prediction").pack(pady=5)
-
     inputs = []
 
     def build_inputs(*_):
@@ -118,8 +123,10 @@ def load_linear_regression_page(main_frame, content_frame):
             pred_label.config(text="Train first", foreground="red")
             return
         vals = [float(e.get()) for e in inputs]
-        y = model["obj"].predict([vals])[0]
-        pred_label.config(text=f"y = {y:.2f}")
+        X_in = np.array(vals).reshape(1, -1)
+        prob = model["obj"].predict_proba(X_in)[0]
+        pred = model["obj"].predict(X_in)[0]
+        pred_label.config(text=f"P={prob:.3f}, Class={pred}")
 
     ttk.Button(left, text="Predict", command=predict).pack(pady=3)
 
