@@ -4,6 +4,8 @@ from tkinter import ttk
 from ui.algorithm_pages.linear_regression_page import load_linear_regression_page
 from ui.algorithm_pages.logistic_regression_page import load_logistic_regression_page
 from ui.algorithm_pages.perceptron_page import load_perceptron_page
+from ui.algorithm_pages.centroid_classifier_page import load_centroid_classifier_page
+from ui.algorithm_pages.naive_bayes_page import load_naive_bayes_page
 
 
 def launch_main_ui():
@@ -11,7 +13,7 @@ def launch_main_ui():
     root.title("ML Algorithm Demonstrator")
     root.geometry("1400x900")
 
-    # Main menu frame (top-level)
+    # Main menu frame
     main_frame = ttk.Frame(root, padding=20)
     main_frame.pack(expand=True, fill="both")
 
@@ -19,7 +21,7 @@ def launch_main_ui():
     content_frame = ttk.Frame(root, padding=20)
 
     # -----------------------------------------------------------
-    #                     Master Title
+    # Title
     # -----------------------------------------------------------
     ttk.Label(
         main_frame,
@@ -28,33 +30,33 @@ def launch_main_ui():
     ).pack(pady=20)
 
     # -----------------------------------------------------------
-    #             Main Container: Supervised | separator | Unsupervised
+    #   Main container (Supervised | separator | Unsupervised)
     # -----------------------------------------------------------
     container = ttk.Frame(main_frame)
     container.pack(pady=10, expand=True)
 
-    # LEFT SIDE = SUPERVISED BLOCK
+    # SUPERVISED
     supervised_block = ttk.Frame(container)
     supervised_block.grid(row=0, column=0, padx=40, sticky="n")
 
-    # VERTICAL SEPARATOR
+    # VERTICAL LINE
     vert_sep = ttk.Separator(container, orient="vertical")
     vert_sep.grid(row=0, column=1, sticky="ns", padx=30)
 
-    # RIGHT SIDE = UNSUPERVISED BLOCK
+    # UNSUPERVISED
     unsupervised_block = ttk.Frame(container)
     unsupervised_block.grid(row=0, column=2, padx=40, sticky="n")
 
-    # ===============================================================
-    #                         SUPERVISED
-    # ===============================================================
+    # ============================================================
+    #                     SUPERVISED
+    # ============================================================
     ttk.Label(
         supervised_block,
         text="Supervised Learning",
         font=("Arial", 20, "bold")
     ).pack(pady=(0, 20))
 
-    # Two subcolumns: Regression (left) and Classification (right)
+    # Two subcolumns: Regression + Classification
     sup_subcontainer = ttk.Frame(supervised_block)
     sup_subcontainer.pack()
 
@@ -85,19 +87,20 @@ def launch_main_ui():
     classification_algos = [
         ("2. Logistic Regression", load_logistic_regression_page),
         ("3. Perceptron", load_perceptron_page),
-        ("4. KNN", None),
-        ("5. SVM", None),
-        ("6. Naive Bayes", None),
-        ("7. Decision Trees", None),
-        ("8. Bagging", None),
-        ("9. Random Forest", None),
-        ("10. Boosting", None),
-        ("11. Neural Networks", None),
+        ("4. Centroid Classifier", load_centroid_classifier_page),   # ← ADDED
+        ("5. Naive Bayes", load_naive_bayes_page),
+        ("6. SVM", None),
+        ("7. Naive Bayes", None),
+        ("8. Decision Trees", None),
+        ("9. Bagging", None),
+        ("10. Random Forest", None),
+        ("11. Boosting", None),
+        ("12. Neural Networks", None),
     ]
 
-    # ===============================================================
-    #                         UNSUPERVISED
-    # ===============================================================
+    # ============================================================
+    #                     UNSUPERVISED
+    # ============================================================
     ttk.Label(
         unsupervised_block,
         text="Unsupervised Learning",
@@ -105,14 +108,14 @@ def launch_main_ui():
     ).pack(pady=(0, 20))
 
     unsupervised_algos = [
-        ("12. K-Means", None),
-        ("13. Dimensionality Reduction", None),
-        ("14. PCA", None),
+        ("13. K-Means", None),
+        ("14. Dimensionality Reduction", None),
+        ("15. PCA", None),
     ]
 
-    # ===============================================================
-    #                  BUTTON CREATOR FUNCTION
-    # ===============================================================
+    # ============================================================
+    #                   BUTTON GENERATOR
+    # ============================================================
     def create_buttons(frame, algo_list):
         for text, callback in algo_list:
             if callback is None:
@@ -125,7 +128,7 @@ def launch_main_ui():
                     command=lambda cb=callback: cb(main_frame, content_frame)
                 ).pack(pady=4)
 
-    # Add buttons to each section
+    # Create buttons
     create_buttons(regression_frame, regression_algos)
     create_buttons(classification_frame, classification_algos)
     create_buttons(unsupervised_block, unsupervised_algos)

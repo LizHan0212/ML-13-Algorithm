@@ -25,7 +25,7 @@
 		J(θ) = -log L(θ) = - Σ [ y^(i)*log(hθ(x^(i))) + (1 - y^(i))*log(1 - hθ(x^(i))) ]
 
 	Optimization Algorithm: 
-		BGD, SGD, Mini-BGD, Newton Method
+		BGD, SGD, Mini-BGD
 
 
 
@@ -42,3 +42,34 @@
 				θ := θ + y * x 
 			else 
 				no update
+
+
+
+
+4. Centroid Classifier
+	Hypothesis Function
+		h(x) = the class whose centroid is closest to x
+
+	Loss Function:
+		N/A
+
+	Optimization Algorithm: 
+		N/A
+
+
+
+
+5. Naive Bayes Classifier
+	Hypothesis:
+       		h(x) = argmax_y  P(y) × Π_j P(x_j | y)
+
+	Loss Function:
+       		J = - Σ log P(y | x)   	# used only for evaluation not for optimizing
+      
+	Optimization  Algorithm:
+       		Counting frequencies:
+           		P(y) = class frequency
+           		P(x_j | y) = feature conditional frequencies
+      		 	Prediction = choose y maximizing P(y) × Π P(x_j | y)
+       		
+
