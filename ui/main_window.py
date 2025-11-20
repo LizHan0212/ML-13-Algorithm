@@ -6,7 +6,9 @@ from ui.algorithm_pages.logistic_regression_page import load_logistic_regression
 from ui.algorithm_pages.perceptron_page import load_perceptron_page
 from ui.algorithm_pages.centroid_classifier_page import load_centroid_classifier_page
 from ui.algorithm_pages.naive_bayes_page import load_naive_bayes_page
-
+from ui.algorithm_pages.SVM_page import load_svm_page
+from ui.algorithm_pages.KNN_page import load_knn_page
+from ui.algorithm_pages.decision_tree_page import load_decision_tree_page
 
 def launch_main_ui():
     root = tk.Tk()
@@ -89,9 +91,9 @@ def launch_main_ui():
         ("3. Perceptron", load_perceptron_page),
         ("4. Centroid Classifier", load_centroid_classifier_page),   # ← ADDED
         ("5. Naive Bayes", load_naive_bayes_page),
-        ("6. SVM", None),
-        ("7. Naive Bayes", None),
-        ("8. Decision Trees", None),
+        ("6. SVM", load_svm_page),
+        ("7. KNN", load_knn_page),
+        ("8. Decision Trees", load_decision_tree_page),
         ("9. Bagging", None),
         ("10. Random Forest", None),
         ("11. Boosting", None),
