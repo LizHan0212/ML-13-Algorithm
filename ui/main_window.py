@@ -9,7 +9,7 @@ from ui.algorithm_pages.naive_bayes_page import load_naive_bayes_page
 from ui.algorithm_pages.SVM_page import load_svm_page
 from ui.algorithm_pages.KNN_page import load_knn_page
 from ui.algorithm_pages.decision_tree_page import load_decision_tree_page
-
+from ui.algorithm_pages.kmeans_page import load_kmeans_page
 def launch_main_ui():
     root = tk.Tk()
     root.title("ML Algorithm Demonstrator")
@@ -110,7 +110,7 @@ def launch_main_ui():
     ).pack(pady=(0, 20))
 
     unsupervised_algos = [
-        ("13. K-Means", None),
+        ("1. K-Means", load_kmeans_page),
         ("14. Dimensionality Reduction", None),
         ("15. PCA", None),
     ]
