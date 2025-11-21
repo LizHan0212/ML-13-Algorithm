@@ -30,6 +30,7 @@
 
 
 
+
 3. Perceptron Classifier
 	Hypothesis Function
 		hθ​(x) = sign(w0​+w1​x1​+w2​x2​+⋯+wd​xd​)
@@ -115,8 +116,38 @@
 		Greedy Tree Building
 
 
----------------------------------------------------Unsupervised Learning-----------------------------------------------------------
 
+
+9. Random Forest
+	bagging + full decision trees + random features
+
+	Random Forest trains randomized decision tree on bootstrap data, then predicts by majority voting.
+
+
+
+
+
+10. adaBoost
+	boosting + very simple trees + weighted samples
+
+	AdaBoost trains a sequence of weak learners, each focusing more on previously misclassified samples, 
+	and combines their weighted predictions into a final strong classifier.
+
+
+
+
+11. Neural Network
+	Neural Networks learn patterns by stacking layers of neurons that apply linear transformations 
+	and nonlinear activation functions. During training, the network adjusts its weights using backpropagation 
+	and gradient descent to minimize a loss function, enabling it to model complex relationships in the data.
+
+	To just illustrate the idea, we simply build a handwritten digit (0-9) recognition program that is trained on the MNIST 
+
+
+	
+---------------------------------------------------Unsupervised Learning-----------------------------------------------------------
+1. K means clustering
+	K-means clusters data by iteratively refining point assignments and centroids.
 
 
 

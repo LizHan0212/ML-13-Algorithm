@@ -1,0 +1,15 @@
+rain,heavy,no,sad
+sunny,light,yes,happy
+rain,light,no,happy
+sunny,heavy,no,sad
+sunny,light,no,happy
+rain,light,yes,sad
+sunny,light,yes,happy
+rain,light,yes,happy
+sunny,heavy,no,happy
+sunny,heavy,yes,sad
+rain,light,yes,happy
+rain,heavy,no,happy
+rain,light,no,sad
+rain,light,no,happy
+rain,heavy,no,sad

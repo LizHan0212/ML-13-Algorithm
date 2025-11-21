@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+# Import all algorithm pages
 from ui.algorithm_pages.linear_regression_page import load_linear_regression_page
 from ui.algorithm_pages.logistic_regression_page import load_logistic_regression_page
 from ui.algorithm_pages.perceptron_page import load_perceptron_page
@@ -9,19 +10,22 @@ from ui.algorithm_pages.naive_bayes_page import load_naive_bayes_page
 from ui.algorithm_pages.SVM_page import load_svm_page
 from ui.algorithm_pages.KNN_page import load_knn_page
 from ui.algorithm_pages.decision_tree_page import load_decision_tree_page
-from ui.algorithm_pages.kmeans_page import load_kmeans_page
 from ui.algorithm_pages.random_forest_page import load_random_forest_page
+from ui.algorithm_pages.adaboost_page import load_adaboost_page
+from ui.algorithm_pages.neural_network_page import load_neural_network_page
+from ui.algorithm_pages.kmeans_page import load_kmeans_page
+
 
 def launch_main_ui():
     root = tk.Tk()
     root.title("ML Algorithm Demonstrator")
-    root.geometry("1400x900")
+    root.geometry("1200x850")
 
     # Main menu frame
     main_frame = ttk.Frame(root, padding=20)
     main_frame.pack(expand=True, fill="both")
 
-    # Content frame for algorithm pages
+    # Content frame (used when opening algorithm pages)
     content_frame = ttk.Frame(root, padding=20)
 
     # -----------------------------------------------------------
@@ -29,112 +33,54 @@ def launch_main_ui():
     # -----------------------------------------------------------
     ttk.Label(
         main_frame,
-        text="Machine Learning Algorithms",
-        font=("Arial", 28, "bold")
-    ).pack(pady=20)
+        text="Common Machine Learning Models",
+        font=("Arial", 30, "bold")
+    ).pack(pady=40)
 
     # -----------------------------------------------------------
-    #   Main container (Supervised | separator | Unsupervised)
+    #  Buttons 2 columns × 6 rows
     # -----------------------------------------------------------
     container = ttk.Frame(main_frame)
-    container.pack(pady=10, expand=True)
+    container.pack(pady=20)
 
-    # SUPERVISED
-    supervised_block = ttk.Frame(container)
-    supervised_block.grid(row=0, column=0, padx=40, sticky="n")
+    left_col = ttk.Frame(container)
+    right_col = ttk.Frame(container)
 
-    # VERTICAL LINE
-    vert_sep = ttk.Separator(container, orient="vertical")
-    vert_sep.grid(row=0, column=1, sticky="ns", padx=30)
+    left_col.grid(row=0, column=0, padx=50)
+    right_col.grid(row=0, column=1, padx=50)
 
-    # UNSUPERVISED
-    unsupervised_block = ttk.Frame(container)
-    unsupervised_block.grid(row=0, column=2, padx=40, sticky="n")
-
-    # ============================================================
-    #                     SUPERVISED
-    # ============================================================
-    ttk.Label(
-        supervised_block,
-        text="Supervised Learning",
-        font=("Arial", 20, "bold")
-    ).pack(pady=(0, 20))
-
-    # Two subcolumns: Regression + Classification
-    sup_subcontainer = ttk.Frame(supervised_block)
-    sup_subcontainer.pack()
-
-    regression_frame = ttk.Frame(sup_subcontainer)
-    classification_frame = ttk.Frame(sup_subcontainer)
-
-    regression_frame.grid(row=0, column=0, padx=40, sticky="n")
-    classification_frame.grid(row=0, column=1, padx=40, sticky="n")
-
-    # ------------------- Regression -------------------
-    ttk.Label(
-        regression_frame,
-        text="Regression",
-        font=("Arial", 16, "underline")
-    ).pack(pady=(0, 10))
-
-    regression_algos = [
+    # Left column: 1–6
+    col1_models = [
         ("1. Linear Regression", load_linear_regression_page),
-    ]
-
-    # ------------------- Classification -------------------
-    ttk.Label(
-        classification_frame,
-        text="Classification",
-        font=("Arial", 16, "underline")
-    ).pack(pady=(0, 10))
-
-    classification_algos = [
         ("2. Logistic Regression", load_logistic_regression_page),
         ("3. Perceptron", load_perceptron_page),
-        ("4. Centroid Classifier", load_centroid_classifier_page),   # ← ADDED
+        ("4. Centroid Classifier", load_centroid_classifier_page),
         ("5. Naive Bayes", load_naive_bayes_page),
         ("6. SVM", load_svm_page),
+    ]
+
+    # Right column: 7–12
+    col2_models = [
         ("7. KNN", load_knn_page),
-        ("8. Decision Trees", load_decision_tree_page),
+        ("8. Decision Tree", load_decision_tree_page),
         ("9. Random Forest", load_random_forest_page),
-        ("10. Random Forest", None),
-        ("11. Boosting", None),
-        ("12. Neural Networks", None),
+        ("10. AdaBoost", load_adaboost_page),
+        ("11. Neural Network", load_neural_network_page),
+        ("12. K-Means", load_kmeans_page),
     ]
 
-    # ============================================================
-    #                     UNSUPERVISED
-    # ============================================================
-    ttk.Label(
-        unsupervised_block,
-        text="Unsupervised Learning",
-        font=("Arial", 20, "bold")
-    ).pack(pady=(0, 20))
+    # Button creator
+    def create_buttons(frame, models):
+        for text, callback in models:
+            ttk.Button(
+                frame,
+                text=text,
+                width=28,
+                command=lambda cb=callback: cb(main_frame, content_frame)
+            ).pack(pady=8)
 
-    unsupervised_algos = [
-        ("1. K-Means", load_kmeans_page),
-        ("14. Dimensionality Reduction", None),
-        ("15. PCA", None),
-    ]
-
-    # ============================================================
-    #                   BUTTON GENERATOR
-    # ============================================================
-    def create_buttons(frame, algo_list):
-        for text, callback in algo_list:
-            if callback is None:
-                ttk.Button(
-                    frame, text=text, width=28, state="disabled"
-                ).pack(pady=4)
-            else:
-                ttk.Button(
-                    frame, text=text, width=28,
-                    command=lambda cb=callback: cb(main_frame, content_frame)
-                ).pack(pady=4)
-
-    # Create buttons
-    create_buttons(regression_frame, regression_algos)
-    create_buttons(classification_frame, classification_algos)
-    create_buttons(unsupervised_block, unsupervised_algos)
+    # Place buttons
+    create_buttons(left_col, col1_models)
+    create_buttons(right_col, col2_models)
 
     root.mainloop()
