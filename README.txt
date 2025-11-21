@@ -1,4 +1,4 @@
----------------------------------------------------Supervised Learning-----------------------------------------------------------
+
 1. Linear Regression
 	Hypothesis Function: 
 		hθ​(x) = w0​+w1​x1​+w2​x2​+⋯+wd​xd​
@@ -145,8 +145,8 @@
 
 
 	
----------------------------------------------------Unsupervised Learning-----------------------------------------------------------
-1. K means clustering
+
+12. K means clustering
 	K-means clusters data by iteratively refining point assignments and centroids.
 
 
