@@ -10,6 +10,8 @@ from ui.algorithm_pages.SVM_page import load_svm_page
 from ui.algorithm_pages.KNN_page import load_knn_page
 from ui.algorithm_pages.decision_tree_page import load_decision_tree_page
 from ui.algorithm_pages.kmeans_page import load_kmeans_page
+from ui.algorithm_pages.random_forest_page import load_random_forest_page
+
 def launch_main_ui():
     root = tk.Tk()
     root.title("ML Algorithm Demonstrator")
@@ -94,7 +96,7 @@ def launch_main_ui():
         ("6. SVM", load_svm_page),
         ("7. KNN", load_knn_page),
         ("8. Decision Trees", load_decision_tree_page),
-        ("9. Bagging", None),
+        ("9. Random Forest", load_random_forest_page),
         ("10. Random Forest", None),
         ("11. Boosting", None),
         ("12. Neural Networks", None),
